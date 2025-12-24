@@ -1,5 +1,14 @@
 # 🎯 FocusTrack (MVP)
 
+<div align="center">
+  <img src="assets/logo.png" alt="FocusTrack Logo" width="200" height="200">
+  <h1>FocusTrack</h1>
+  <p>
+    <b>Data-Driven Focus Management Solution for Academies</b>
+  </p>
+</div>
+
+## 🧐 Background...
 > **Computer Vision Based Focus Monitoring System for Ed-Tech**
 > 
 > "기술로 가치를 창출한다" - 학습자의 집중도를 실시간으로 측정하여 학습 효율을 극대화하는 솔루션입니다.
