@@ -1,14 +1,14 @@
 # 🎯 FocusTrack (MVP)
 
 <div align="center">
-  <img src="assets/logo.png" alt="FocusTrack Logo" width="200" height="200">
+  <img src="docs/images/logo.png" alt="FocusTrack Logo" width="200" height="200">
   <h1>FocusTrack</h1>
   <p>
     <b>Data-Driven Focus Management Solution for Academies with Computer Vision</b>
   </p>
 </div>
 
-![Python](https://img.shields.io/badge/Python-3.9-3776AB?logo=python&logoColor=white)
+![Python](https://img.shields.io/badge/Python-3.11+-3776AB?logo=python&logoColor=white)
 ![MediaPipe](https://img.shields.io/badge/MediaPipe-Vision-0099CC?logo=google&logoColor=white)
 ![OpenCV](https://img.shields.io/badge/OpenCV-Computer_Vision-5C3EE8?logo=opencv&logoColor=white)
 ![RaspberryPi](https://img.shields.io/badge/Device-Raspberry_Pi-C51A4A?logo=raspberrypi&logoColor=white)
