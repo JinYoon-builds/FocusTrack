@@ -72,14 +72,14 @@
 
 ## 📝 Dev Log & ADR (Architecture Decision Records)
 주요 기술적 의사결정과 트러블슈팅 내역은 아래에서 확인할 수 있습니다.
-* [📂 docs/adr/001_switch_to_mediapipe.md] : TensorFlow에서 MediaPipe로 피봇팅한 이유
+* [📂 docs/ADR/001_switch_to_mediapipe.md] : TensorFlow에서 MediaPipe로 피봇팅한 이유
 
 <br/>
 
 ## 🚀 Roadmap & Progress
 
 - [x] **Ideation & Market Research**: 문제 정의 및 기존 솔루션 분석.
-- [x] **Prototyping (Phase 1)**: MobileNet 기반 이미지 분류 모델 테스트 (-> *Background Noise 문제로 폐기*)
+- [x] **Prototyping (Phase 1)**: MobileNet 기반 이미지 분류 모델 테스트 (-> *Background Noise 문제로 폐기*) (2025.12.19 ~ 2025.12.24)
 - [ ] **MVP Development (Phase 2)**: MediaPipe + KNN 알고리즘 구현 및 로컬 시각화(Streamlit). **(~2026.02.09)**
 - [ ] **Backend & Data Pipeline (Phase 3)**: FastAPI 서버 구축, 시계열 데이터 DB 설계, 집중도 분석 로직(순수 공부 시간 산출) 구현.
 - [ ] **Hardware Porting (Phase 4)**: Raspberry Pi 포팅, 엣지-서버 통신 최적화 및 QR 로그인 시스템 구축.
