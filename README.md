@@ -26,7 +26,7 @@
 ## 🧐 Problem & Solution
 
 ### ❓ The Problem
-기존의 관리형 독서실이나 캠스터디 시스템은 단순히 **착석 여부(Quantity)**만을 관리합니다. 학부모는 학생이 등원했다는 사실만 알 수 있고, 학생은 자신이 정확히 얼마나 몰입했는지 모른 채 '오래 앉아 있었다'는 사실만으로 위안을 얻습니다.
+기존의 관리형 독서실이나 캠스터디 시스템은 단순히 <b>착석 여부(Quantity)</b>만을 관리합니다. 학부모는 학생이 등원했다는 사실만 알 수 있고, 학생은 자신이 정확히 얼마나 몰입했는지 모른 채 '오래 앉아 있었다'는 사실만으로 위안을 얻습니다.
 
 ### ❗️ Our Solution
 **FocusTrack**은 컴퓨터 비전(Computer Vision) 기술을 활용해 사용자의 실제 학습 행동을 분석하고, **데이터 기반의 피드백**을 제공합니다.
@@ -39,15 +39,15 @@
 
 ## 🧠 Core Logic (Data Pipeline)
 
-시스템은 크게 **Edge(수집/판정)** → **Server(가공/저장)** → **Client(시각화)**의 3단계로 작동합니다.
+시스템은 크게 **Edge(수집/판정)** → **Server(가공/저장)** → <b>Client(시각화)</b>의 3단계로 작동합니다.
 
 1.  **Input (Edge):** 웹캠을 통해 라즈베리파이(또는 PC)로 실시간 영상 스트림 입력.
 2.  **Feature Extraction (MediaPipe):** 배경을 소거하고, 사용자의 관절 좌표(Landmark 33개)만을 추출.
-3.  **Anomaly Detection (One-Class):** * **Calibration:** 시작 시 약 5초간 사용자의 '표준 공부 자세'를 수집하여 기준점(Centroid)을 생성.
-    * **Distance Calculation:** 실시간 좌표가 기준점 임계값(Threshold)을 벗어나면 즉시 **'비집중(Outlier)'**으로 판정. (별도의 '딴짓' 데이터 학습 불필요)
+3.  **Anomaly Detection (One-Class):** * **Calibration:** 시작 시 약 30초간 사용자의 '표준 공부 자세'를 수집하여 기준점(Centroid)을 생성.
+    * **Distance Calculation:** 실시간 좌표가 기준점 임계값(Threshold)을 벗어나면 즉시 <b>'비집중(Outlier)'</b>으로 판정. (별도의 '딴짓' 데이터 학습 불필요)
 4.  **Data Transmission:** 엣지 디바이스는 영상이 아닌, 판정된 결과값(`0` or `1`)과 타임스탬프만을 JSON 형태로 서버에 전송.
 5.  **Data Aggregation (Server):** 서버는 수신된 시계열 데이터를 분석하여 **순수 집중 시간(Net Focus Time)**, **집중 유지 구간**, **이탈 빈도** 등을 가공.
-6.  **Visualization (User):** 사용자는 웹 대시보드를 통해 시각화된 **'일간/주간 집중 리포트'**를 확인하고 학습 패턴을 점검.
+6.  **Visualization (User):** 사용자는 웹 대시보드를 통해 시각화된 <b>'일간/주간 집중 리포트'</b>를 확인하고 학습 패턴을 점검.
 
 <br/>
 
@@ -74,8 +74,8 @@
 ## 📝 Dev Log & ADR (Architecture Decision Records)
 주요 기술적 의사결정과 트러블슈팅 내역은 아래에서 확인할 수 있습니다.
 
-* [📂 ADR-001: TensorFlow에서 MediaPipe로 피봇팅한 이유](docs/ADR/001_switch_to_mediapipe.md)
-* *(여기에 ADR-002도 추가될 예정)*
+* [📂 ADR-001: 전체 이미지 분석(MobileNet)에서 좌표 기반 분석(MediaPipe)으로의 전환](docs/ADR/001_switch_to_mediapipe.md)
+* [📂 ADR-002: 지도 학습(Binary Classification)에서 이상 탐지(Anomaly Detection)로의 전환](docs/ADR/002_shift_to_anomaly_detection.md)
 
 <br/>
 
