@@ -23,7 +23,7 @@ def main():
     pose_wrapper = PoseWrapper()
     renderer = Renderer()
     calibrator = PoseCalibrator(buffer_size=30)
-    analyzer = FocusAnalyzer(threshold=0.05)
+    analyzer = FocusAnalyzer(threshold=3.0)
 
     # 초기상태설정
     current_state = STATE_WAITING
@@ -67,8 +67,8 @@ def main():
                 if calibrator.is_ready():
                     print("✅ 캘리브레이션 완료! 분석 모드로 전환...")
 
-                    standard_pose = calibrator.get_standard_pose()
-                    analyzer.set_standard_pose(standard_pose)
+                    mean_vec, inv_cov = calibrator.get_statistics()
+                    analyzer.set_standard_pose(mean_vec, inv_cov)
 
                     current_state = STATE_MONITORING
 
@@ -79,7 +79,7 @@ def main():
                 renderer.draw_monitoring(frame, status, dist)
 
         # 최종 화면 출력
-        cv2.imshow('FocusTrack V2.0', frame)
+        cv2.imshow('FocusTrack V2.1', frame)
 
         # 키보드 제어
         key = cv2.waitKey(1) & 0xFF
