@@ -71,11 +71,22 @@
 
 <br/>
 
-## 📝 Dev Log & ADR (Architecture Decision Records)
-주요 기술적 의사결정과 트러블슈팅 내역은 아래에서 확인할 수 있습니다.
+## 📚 Engineering Wiki & Dev Log
+프로젝트 진행 과정에서 고민한 기술적 의사결정과 문제 해결 과정을 기록했습니다.
 
+### 🏗️ Architecture Decision Records (ADR)
+주요 기술 스택 선정 및 아키텍처 변경에 대한 의사결정 내역입니다.
 * [📂 ADR-001: 전체 이미지 분석(MobileNet)에서 좌표 기반 분석(MediaPipe)으로의 전환](docs/ADR/001_switch_to_mediapipe.md)
 * [📂 ADR-002: 지도 학습(Binary Classification)에서 이상 탐지(Anomaly Detection)로의 전환](docs/ADR/002_shift_to_anomaly_detection.md)
+
+### 📐 Core Concepts & Algorithms
+프로젝트에 적용된 핵심 알고리즘과 수학적 배경지식입니다.
+* [📝 Tech Note: 왜 유클리드 대신 '마할라노비스 거리'인가?](docs/concepts/math_mahalanobis_distance.md)
+    * *좌표의 분산과 공분산을 고려한 통계적 거리의 도입 배경 및 원리*
+
+### 🛠️ Troubleshooting
+* [🐛 Fix: "거리 22억" 버그 - 특이 행렬(Singular Matrix)과 Regularization](docs/troubleshooting/ts_001_singular_matrix_fix.md)
+* [🐛 Fix: Numpy 차원 불일치 문제와 .flatten() 활용](docs/troubleshooting/ts_002_numpy_flatten.md)
 
 <br/>
 
