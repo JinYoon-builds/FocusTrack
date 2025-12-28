@@ -15,9 +15,8 @@ def extract_features(landmarks):
     # 센터링
     left_shoulder = points[11]
     right_shoulder = points[12]
-
     center = (left_shoulder + right_shoulder) / 2
-
+    # 어깨 중점을 (0, 0)으로 한 좌표계로 세팅
     centered_points = selected_points - center
 
     # 스케일링: 크기 보정
