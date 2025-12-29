@@ -1,5 +1,6 @@
 import numpy as np
 from numpy.linalg import inv, LinAlgError
+from collections import deque
 
 def extract_features(landmarks):
     # 양 어깨 중점을 (0, 0)으로 지정 센터링
@@ -75,10 +76,13 @@ class PoseCalibrator:
     
 # 판정기
 class FocusAnalyzer:
-    def __init__(self, threshold = 3.0):
+    def __init__(self, threshold = 3.0, window_size = 30):
         self.threshold = threshold
         self.mean_vector = None
         self.inv_cov_matrix = None
+
+        # voting system 추가
+        self.history = deque(maxlen = window_size)
 
     def set_standard_pose(self, mean_vector, inv_cov_matrix):
         self.mean_vector = mean_vector
@@ -100,11 +104,24 @@ class FocusAnalyzer:
 
         dist = np.sqrt(max(mahalanobis_sq, 0.0))
 
+        # voting logic
+        is_focused_now = dist < self.threshold
 
-        print(f"DEBUG: 거리={dist:.4f} / 기준={self.threshold} / 결과={dist < self.threshold}")
+        self.history.append(is_focused_now)
 
-        if dist < self.threshold:
-            return "Focused", dist
-        
+        focus_rate = 0.0
+    
+        if len(self.history) == self.history.maxlen:
+            # 초당 집중 비율 판정  
+            focus_count = sum(self.history)
+            focus_rate = focus_count / len(self.history)
+
+            if focus_rate >= 0.6:
+                final_decision = "FOCUSED"
+            else:
+                final_decision = "DISTRACTED"
+
         else:
-            return "Distracted", dist
+            final_decision = "Collecting..."
+
+        return final_decision, dist, focus_rate

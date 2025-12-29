@@ -1,9 +1,11 @@
 import cv2
+import time
 
 from core.analyzer import PoseCalibrator, FocusAnalyzer
 from utils.camera import Camera
 from core.pose_wrapper import PoseWrapper
 from ui.renderer import Renderer
+from core.database import FocusLogger
 
 # 상태 상수
 STATE_WAITING = 0      # 준비
@@ -24,33 +26,36 @@ def main():
     renderer = Renderer()
     calibrator = PoseCalibrator(buffer_size=30)
     analyzer = FocusAnalyzer(threshold=3.0)
+    logger = FocusLogger(buffer_size=10)
 
     # 초기상태설정
     current_state = STATE_WAITING
+    last_log_time = 0
     print("FocusTrack v2.0 시동... 캘리브레이션을 시작하려면 c를 누르세요.")
 
-    # 메인 루프
-    fail_count = 0
-    while True:
+    try:
+        # 메인 루프
+        fail_count = 0
+        while True:
         # 입력
-        frame = camera.read()
+            frame = camera.read()
         
-        if frame is None:
-            fail_count += 1
-            print(f"⚠️ 프레임 드랍 발생! ({fail_count}/10)")
+            if frame is None:
+                fail_count += 1
+                print(f"⚠️ 프레임 드랍 발생! ({fail_count}/10)")
             
-            if fail_count > 10:
-                print("❌ 카메라 연결이 완전히 끊어졌습니다. 종료합니다.")
-                break
-            # 이번 프레임은 건너뛰고 다시 시도
-            continue
+                if fail_count > 10:
+                    print("❌ 카메라 연결이 완전히 끊어졌습니다. 종료합니다.")
+                    break
+                # 이번 프레임은 건너뛰고 다시 시도
+                continue
 
-        # 처리: 빼대 찾기
-        results = pose_wrapper.process(frame)
+            # 처리: 빼대 찾기
+            results = pose_wrapper.process(frame)
 
-        # 로직 & 출력
-        if results.pose_landmarks:
-            renderer.draw_skeleton(frame, results.pose_landmarks)
+            # 로직 & 출력
+            if results.pose_landmarks:
+                renderer.draw_skeleton(frame, results.pose_landmarks)
 
             # 상태별 로직
             # 1. 대기 화면
@@ -72,27 +77,39 @@ def main():
 
                     current_state = STATE_MONITORING
 
-            # 3. 분석 모드 화면
+            # 3. 분석 모드 화면 + logging
+            # ‼️ 코어 로직 ‼️
             elif current_state == STATE_MONITORING:
-                status, dist = analyzer.analyze(results.pose_landmarks)
-
+                status, dist, focus_rate = analyzer.analyze(results.pose_landmarks)
                 renderer.draw_monitoring(frame, status, dist)
+                
+                if time.time() - last_log_time >= 1.0:
+                    is_focused_bool = (status == "FOCUSED")
 
-        # 최종 화면 출력
-        cv2.imshow('FocusTrack V2.1', frame)
+                    logger.log(is_focused=is_focused_bool, focus_rate=focus_rate, dist=dist)
 
-        # 키보드 제어
-        key = cv2.waitKey(1) & 0xFF
-        if key == ord('q'):
-           print("프로그램을 종료합니다.")
-           break
-        elif key == ord('c') and current_state == STATE_WAITING:
-            print("사용자 캘리브레이션(최적화) 중...")
-            current_state = STATE_CALIBRATING
+                    print(f"📝 Logged: {status} (Rate: {focus_rate:.2f})")
 
-    # 종료
-    camera.release()
-    cv2.destroyAllWindows()
+                    last_log_time = time.time()
+
+
+            # 최종 화면 출력
+            cv2.imshow('FocusTrack V2.1', frame)
+
+            # 키보드 제어
+            key = cv2.waitKey(1) & 0xFF
+            if key == ord('q'):
+                print("프로그램을 종료합니다.")
+                break
+            elif key == ord('c') and current_state == STATE_WAITING:
+                print("사용자 캘리브레이션(최적화) 중...")
+                current_state = STATE_CALIBRATING
+
+    finally:
+        print("시스템 종료...")
+        logger.close()
+        camera.release()
+        cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     main()

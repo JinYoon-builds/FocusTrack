@@ -28,7 +28,7 @@ class Renderer:
     
     # 2. 캘리브레이션 화면: int count 필요
     def draw_calibration(self, frame, count: int):
-        self._draw_text(frame, f"Collecting data ... {count} / 150", BLUE)
+        self._draw_text(frame, f"Collecting data ... {count} / 30", BLUE)
 
     # 3. 감시 화면: str status, float dist 필요
     def draw_monitoring(self, frame, status : str, dist : float):
