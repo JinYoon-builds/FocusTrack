@@ -81,8 +81,9 @@
 
 ### 📐 Core Concepts & Algorithms
 프로젝트에 적용된 핵심 알고리즘과 수학적 배경지식입니다.
-* [📝 Tech Note: 왜 유클리드 대신 '마할라노비스 거리'인가?](docs/concepts/math_mahalanobis_distance.md)
+* [📝 Tech Note: 왜 유클리드 대신 '마할라노비스 거리'인가?](docs/concepts/mahalanobis_distance.md)
     * *좌표의 분산과 공분산을 고려한 통계적 거리의 도입 배경 및 원리*
+* [📝 Tech Note: 유한 상태 머신 (Finite State Machine)](docs/concepts/pattern_state_machine.md)
 
 ### 🛠️ Troubleshooting
 * [🐛 Fix: "거리 22억" 버그 - 특이 행렬(Singular Matrix)과 Regularization](docs/troubleshooting/ts_001_singular_matrix_fix.md)
