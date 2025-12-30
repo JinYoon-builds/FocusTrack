@@ -37,13 +37,32 @@
 
 <br/>
 
+## ✨ Key Features (MVP)
+
+* <b>🦾 Multi-Pose Calibration (멀티 포즈 캘리브레이션):</b>
+    * 개개인의 다양한 학습 자세에 맞추어 최적화합니다. 정자세, 몰입(앞으로 숙임), 이완(뒤로 기댐) 등 사용자의 <b>3가지 자세 패턴</b>을 모두 학습합니다.
+    * 자연스러운 움직임을 허용하는 **강건한(Robust) 알고리즘**으로 오탐지 스트레스를 최소화했습니다.
+
+* <b>⏱️ Real-time Focus Analytics (실시간 집중 분석):</b>
+    * 미디어파이프(MediaPipe) 기반으로 33개의 관절 포인트를 초당 30회 분석합니다.
+    * <b>마할라노비스 거리(Mahalanobis Distance)</b>를 적용하여, 단순 거리 계산보다 정밀한 이상치 탐지(Anomaly Detection)를 수행합니다.
+
+* <b>📊 Time-series Logging (시계열 데이터 로깅):</b>
+    * 집중도 변화를 0.0~1.0 사이의 연속적인 수치로 기록합니다.
+    * 순간적인 움직임에 흔들리지 않도록 <b>이동 평균(Moving Average)</b> 필터를 적용하여 데이터의 신뢰성을 확보했습니다.
+
+* <b>🔒 Privacy-First On-Device AI:</b>
+    * 민감한 영상 데이터를 서버로 전송하지 않습니다. 모든 연산은 로컬(Edge Device)에서 처리되며, 서버로는 오직 타임스탬프와 '집중 여부(0/1)' 데이터만 전송됩니다.
+
+<br/>
+
 ## 🧠 Core Logic (Data Pipeline)
 
 시스템은 크게 **Edge(수집/판정)** → **Server(가공/저장)** → <b>Client(시각화)</b>의 3단계로 작동합니다.
 
 1.  **Input (Edge):** 웹캠을 통해 라즈베리파이(또는 PC)로 실시간 영상 스트림 입력.
 2.  **Feature Extraction (MediaPipe):** 배경을 소거하고, 사용자의 관절 좌표(Landmark 33개)만을 추출.
-3.  **Anomaly Detection (One-Class):** * **Calibration:** 시작 시 약 30초간 사용자의 '표준 공부 자세'를 수집하여 기준점(Centroid)을 생성.
+3.  **Anomaly Detection (One-Class):** * Calibration: 시작 시 사용자의 3가지 자세(정자세, 몰입, 이완) 데이터를 수집하고 병합(Aggregation)하여, 개인별 고유한 다변량 분포(Multivariate Distribution)를 생성.
     * **Distance Calculation:** 실시간 좌표가 기준점 임계값(Threshold)을 벗어나면 즉시 <b>'비집중(Outlier)'</b>으로 판정. (별도의 '딴짓' 데이터 학습 불필요)
 4.  **Data Transmission:** 엣지 디바이스는 영상이 아닌, 판정된 결과값(`0` or `1`)과 타임스탬프만을 JSON 형태로 서버에 전송.
 5.  **Data Aggregation (Server):** 서버는 수신된 시계열 데이터를 분석하여 **순수 집중 시간(Net Focus Time)**, **집중 유지 구간**, **이탈 빈도** 등을 가공.
