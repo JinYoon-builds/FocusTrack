@@ -121,5 +121,43 @@
 
 <br/>
 
+
+## 🚧 한계점 및 향후 계획 (Limitations & Roadmap)
+
+### 1. 현재 모델의 한계: 간접 지표(Proxy Metric)로서의 자세
+
+* <b>한계점:</b>
+    * <b>자세 유지 중 딴짓:</b> 바른 자세로 앉아서 스마트폰을 하거나 멍하니 있는 경우(Daydreaming)를 감지하기 어려움.
+    * <b>편한 자세로 몰입:</b> 턱을 괴거나 다리를 꼬고 고도로 집중하는 경우를 '비집중'으로 오탐지할 가능성. (멀티 포즈 캘리브레이션으로 일부 완화했으나 여전히 존재)
+
+즉, 현재 단계는 <b>"Focus Tracker"</b>를 지향하는 <b>"Advanced Posture Tracker"</b>에 가깝습니다.
+
+### 2. 기술 고도화 로드맵 (Future Roadmap)
+단순 자세 분석을 넘어, <b>Multi-modal Focus Sensing</b>을 통해 진정한 의미의 집중도 측정기로 발전시킬 계획입니다.
+
+* <b>Phase 1: Gaze & Blink Analysis (졸음/멍때림 탐지)</b>
+    * 눈의 랜드마크(Eye Aspect Ratio, EAR)를 분석하여 눈 깜빡임 빈도 측정.
+    * 다른 곳을 장시간 응시하는 시선 이탈(Gaze Tracking) 감지.
+* <b>Phase 2: Object Detection (딴짓 탐지)</b>
+    * YOLO 등 경량 객체 탐지 모델을 조건부(Trigger-based)로 가동.
+    * 학습 공간 내 <b>스마트폰, 책 이외의 잡지, 게임기</b> 등이 검출될 경우 즉각적인 감점 처리.
+* <b>Phase 3: Screen Activity Monitoring (선택 사항)</b>
+    * (옵션) 사용자의 동의하에 활성 윈도우(Active Window) 타이틀을 분석하여, IDE/문서 뷰어가 아닌 유튜브/SNS 사용 시 집중도 점수 보정.
+
+### 3. 🌐 Long-term Vision
+* <b>Hardware:</b> 보급형 AI 키트(RPi + Cam)를 B2B(학원/독서실)에 공급하여 오프라인 접점 확보.
+* <b>Data Loop:</b> 수집된 익명 행동 데이터(Behavioral Data)를 기반으로 집중 패턴 정밀 분석 모델 고도화.
+* <b>Flywheel:</b> [데이터 축적] -> [알고리즘 고도화] -> [개인화 솔루션 제공] -> [시장 점유율 확대]의 선순환 구조 구축.
+
+### 4. 📱 FocusTrack Ecosystem (Post-MVP)
+하드웨어 키트와 연동되는 **Companion Mobile App**을 개발하여 물리적/디지털 환경을 동시에 통제합니다.
+
+* <b>Real-time Sync & Hard-Lock:</b>
+    * FocusTrack 키트가 '집중 시작'을 감지하면, BLE/MQTT를 통해 모바일 앱으로 신호 전송.
+    * <b>Android:</b> Accessibility Service를 활용하여 실행 즉시 강제 종료.
+    * <b>iOS:</b> <b>Screen Time API (FamilyControls)</b>를 활용하여, OS 레벨에서 방해 앱(SNS, 게임 등) 실행을 원천 차단(Shielding).
+* <b>Silent Alarm:</b>
+    * 졸음 감지 시, 독서실 같은 조용한 환경을 고려하여 스피커 경고음 대신 <b>스마트폰/스마트워치 진동</b>으로 깨워줌.
+
 ---
 Contact: jin.yoon.builds@gmail.com
