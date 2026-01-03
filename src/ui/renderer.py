@@ -24,9 +24,12 @@ class Renderer:
 
     # 상황별 화면 
     # 1. 대기 화면
-    def draw_waiting(self, frame):
+    def draw_waiting(self, frame, info_text = ""):
         center_x = frame.shape[1] // 2
         self._draw_text(frame, "Press 'c' to Calibrate", (center_x - 200, 100), RED, 1.2)
+
+        if info_text:
+            self._draw_text(frame, info_text, (center_x - 200, 300), GREEN, 1.0)
     
     # 2. 캘리브레이션 화면: int count, total 필요, str 상태메시지 필요
     def draw_calibration(self, frame, message: str, count: int, target:int):
@@ -42,9 +45,10 @@ class Renderer:
 
     # 3. 감시 화면: str status, float dist 필요
     def draw_monitoring(self, frame, status : str, dist : float):
+        center_x = frame.shape[1] // 2
         if status == "FOCUSED":
             color = GREEN
         else:
             color = BLUE
-        self._draw_text(frame, f"{status} (Diff: {dist: .3f})", color)
+        self._draw_text(frame, f"{status} (Diff: {dist: .3f})", (center_x - 200, 300), color, 1.0)
         

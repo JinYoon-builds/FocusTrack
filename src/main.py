@@ -32,6 +32,14 @@ def main():
     analyzer = FocusAnalyzer(threshold=3.0)
     logger = FocusLogger(buffer_size=10)
 
+    # 오늘 누적공부량 조회
+    today_total_sec, today_focus_sec = logger.get_today_stats()
+    today_focus_min = int(today_focus_sec // 60)
+
+    today_msg = f"Today's Focus Time: {today_focus_min} min {today_focus_sec - 60 * today_focus_min} sec"
+
+    print(f"✅ 오늘 기존 기록: {today_focus_min} min")
+
     # 초기상태설정
     current_state = STATE_WAITING
     last_log_time = 0
@@ -66,7 +74,7 @@ def main():
             # 상태별 로직
             # 1. 대기 화면
             if current_state == STATE_WAITING:
-                renderer.draw_waiting(frame)
+                renderer.draw_waiting(frame, today_msg)
 
             # 2. 캘리브레이션 화면
             elif current_state == STATE_CALIBRATING:
