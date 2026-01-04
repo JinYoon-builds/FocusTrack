@@ -81,12 +81,13 @@
 
 | Category | Technology |
 | --- | --- |
-| **Language** | Python 3.11+ |
-| **Vision AI** | MediaPipe Pose, OpenCV |
-| **Algorithm** | NumPy (Vector Ops), Anomaly Detection |
-| **Edge Device** | Raspberry Pi 4 / 5 (Target) |
-| **Backend** | FastAPI (Planned) |
-| **Frontend** | Streamlit (MVP) |
+| <b>Language</b> | Python 3.11+ |
+| <b>Vision AI</b> | MediaPipe Pose, OpenCV |
+| <b>Algorithm</b> | NumPy (Vector Ops), Anomaly Detection |
+| <b>Edge Device</b> | Raspberry Pi 4 / 5 (Target) |
+| <b>Cloud Infra</b> | AWS Lambda (Serverless), API Gateway |
+| <b>Database</b> | Amazon DynamoDB (NoSQL) |
+| <b>Dashboard</b> | Streamlit (Web Visualization) |
 
 <br/>
 
@@ -97,12 +98,16 @@
 주요 기술 스택 선정 및 아키텍처 변경에 대한 의사결정 내역입니다.
 * [📂 ADR-001: 전체 이미지 분석(MobileNet)에서 좌표 기반 분석(MediaPipe)으로의 전환](docs/ADR/001_switch_to_mediapipe.md)
 * [📂 ADR-002: 지도 학습(Binary Classification)에서 이상 탐지(Anomaly Detection)로의 전환](docs/ADR/002_shift_to_anomaly_detection.md)
+* [📂 ADR-003: 데이터 동기화를 위한 AWS Serverless 아키텍처 도입](docs/ADR/003_adoption_of_serverless_architecture.md)
 
 ### 📐 Core Concepts & Algorithms
 프로젝트에 적용된 핵심 알고리즘과 수학적 배경지식입니다.
 * [📝 Tech Note: 왜 유클리드 대신 '마할라노비스 거리'인가?](docs/concepts/mahalanobis_distance.md)
     * *좌표의 분산과 공분산을 고려한 통계적 거리의 도입 배경 및 원리*
 * [📝 Tech Note: 유한 상태 머신 (Finite State Machine)](docs/concepts/pattern_state_machine.md)
+* [📝 Tech Note: Serverless 환경에서의 DB Connection 전략과 DynamoDB 선정 배경](docs/concepts/serverless_db_connection_strategy.md)
+* [📝 Tech Note: 커넥션 풀(Connection Pool)과 서버리스의 한계](docs/concepts/connection_pooling_issue.md)
+
 
 ### 🛠️ Troubleshooting
 * [🐛 Fix: "거리 22억" 버그 - 특이 행렬(Singular Matrix)과 Regularization](docs/troubleshooting/ts_001_singular_matrix_fix.md)
@@ -112,12 +117,12 @@
 
 ## 🚀 Roadmap & Progress
 
-- [x] **Ideation & Market Research**: 문제 정의 및 기존 솔루션 분석.
-- [x] **Prototyping (Phase 1)**: MobileNet 기반 이미지 분류 모델 테스트 (-> *Background Noise 문제로 폐기*) (2025.12.19 ~ 2025.12.24)
-- [ ] **MVP Development (Phase 2)**: MediaPipe + 이상 탐지(Calibration) 알고리즘 구현 및 로컬 시각화(Streamlit). **(~2026.02.09)**
-- [ ] **Backend & Data Pipeline (Phase 3)**: FastAPI 서버 구축, 시계열 데이터 DB 설계, 집중도 분석 로직(순수 공부 시간 산출) 구현.
-- [ ] **Hardware Porting (Phase 4)**: Raspberry Pi 포팅, 엣지-서버 통신 최적화 및 QR 로그인 시스템 구축.
-- [ ] **B2B Deployment**: 관리형 독서실 환경 필드 테스트 및 피드백 반영.
+- [x] <b>Ideation & Market Research</b>: 문제 정의 및 기존 솔루션 분석.
+- [x] <b>Prototyping (Phase 1)</b>: MobileNet 기반 이미지 분류 모델 테스트 (-> <i>Background Noise 문제로 폐기</i>) (2025.12.19 ~ 2025.12.24)
+- [ ] <b>Core Logic Verification (Phase 2)</b>: MediaPipe + 이상 탐지(Calibration) 알고리즘 구현 및 <b>헤드리스(Headless) 동작 검증</b>.
+- [ ] <b>Cloud Infrastructure (Phase 3)</b>: AWS Serverless (Lambda + DynamoDB) 기반 데이터 파이프라인 구축 및 API Gateway 연동.
+- [ ] <b>Hardware Porting (Phase 4)</b>: Raspberry Pi 포팅, 엣지-클라우드 데이터 동기화 최적화 및 QR 로그인 시스템 구축.
+- [ ] <b>B2B Deployment</b>: 관리형 독서실 환경 필드 테스트 및 피드백 반영.
 
 <br/>
 
