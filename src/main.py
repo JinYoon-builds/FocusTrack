@@ -124,7 +124,8 @@ def main():
                 
                 if time.time() - last_log_time >= 1.0:
                     is_focused_bool = (status == "FOCUSED")
-
+                    
+                    # 매 초당 집중기록
                     logger.log(is_focused=is_focused_bool, focus_rate=focus_rate, dist=dist)
 
                     print(f"📝 Logged: {status} (Rate: {focus_rate:.2f})")
@@ -153,7 +154,7 @@ def main():
 
     finally:
         print("시스템 종료...")
-        logger.close()
+        logger.close() # 세션 요약 정리
         camera.release()
         cv2.destroyAllWindows()
 

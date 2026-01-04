@@ -71,7 +71,6 @@ class FocusLogger:
             cursor.executemany('''
                 INSERT INTO focus_logs(session_id, date, time, is_focused, focus_rate, dist)
                 VALUES(?, ?, ?, ?, ?, ?)
-
             ''', self.buffer)
 
             conn.commit()
@@ -151,5 +150,5 @@ class FocusLogger:
 
     
     def close(self):
-        self.save_session_summary()
+        self.save_session_summary() #세션 요약
         print("✅ DB 연결 종료. ")
