@@ -148,7 +148,60 @@ class FocusLogger:
 
         return total, focused
 
-    
+    def export_session_to_json(self):
+        """
+        :param self: [배치 업로드용]
+        현재 세션의 요약 정보(Summary)와 상세 로그(Logs)를 
+        JSON 전송 가능한 딕셔너리 형태로 추출합니다.
+        """
+
+        conn = sqlite3.connect(self.db_path)
+
+        conn.row_factory = sqlite3.Row
+        cursor = conn.cursor()
+
+        try:
+            # 세션 정보 가져오기
+            cursor.execute('' \
+            'SELECT *' \
+            'FROM sessions' \
+            'WHERE session_id = ?', (self.session_id, ))
+            session_row = cursor.fetchone()
+        
+            session_data = dict(session_row)
+
+            # 세션에 해당하는 로그 전체 조회
+            cursor.execute('' \
+            'SELECT *' \
+            'FROM focus_logs' \
+            'WHERE session_id = ?', (self.session_id,))
+
+            logs_rows = cursor.fetchall()
+
+            logs_data = [dict(row) for row in logs_rows]
+
+            # 최종 페이로드 구성
+            payload = {
+                "metadata": {
+                    "user_id" : 1,
+                    "device_type" : "macbook_mvp",
+                    "timestamp": self.start_dt.strftime("%Y-%m-%d %H:%M:%S")
+                },
+                "session_summary" : session_data,
+                "session_logs": logs_data
+            }
+            return payload
+
+
+        except Exception as e:
+            print(f"❌ 데이터 추출 실패: {e}")
+            return None
+        
+        finally:
+            conn.close()
+
+
+
     def close(self):
         self.save_session_summary() #세션 요약
         print("✅ DB 연결 종료. ")
