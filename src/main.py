@@ -1,11 +1,15 @@
 import cv2
 import time
+import json
 
 from core.analyzer import PoseCalibrator, FocusAnalyzer
 from utils.camera import Camera
 from core.pose_wrapper import PoseWrapper
 from ui.renderer import Renderer
 from core.database import FocusLogger
+from src.utils.cloud_uploader import CloudUploader
+
+API_URL = "https://463bve3cq6.execute-api.ap-northeast-2.amazonaws.com/default/FocusTrackIngest"
 
 # 상태 머신 STATE MACHINE
 STATE_WAITING = 0      # 준비
@@ -31,6 +35,7 @@ def main():
 
     analyzer = FocusAnalyzer(threshold=3.0)
     logger = FocusLogger(buffer_size=10)
+    uploader = CloudUploader(API_URL)
 
     # 오늘 누적공부량 조회
     today_total_sec, today_focus_sec = logger.get_today_stats()
@@ -155,6 +160,29 @@ def main():
     finally:
         print("시스템 종료...")
         logger.close() # 세션 요약 정리
+
+        # JSON 추출
+        payload = logger.export_session_to_json()
+        
+        if payload:
+            print("✅ 클라우드 업로드 시도...")
+
+            is_success = uploader.upload_session(payload)
+
+            if is_success:
+                print("✅ 학습 데이터 저장 성공!")
+            
+            else: 
+                print("❌ 학습 데이터 전송 실패. 로컬 파일로 백업...")
+
+                filename = f"backup_session_{logger.session_id}.json"
+                with open(filename, "w", encoding="utf-8") as f:
+                    json.dump(payload, f, indent=4, ensure_ascii=False)
+
+                print(f"✅ 백업 완료! 파일명: {filename}")
+        else:
+            print("❌ 전송할 데이터 없음.")
+
         camera.release()
         cv2.destroyAllWindows()
 
