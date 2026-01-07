@@ -121,8 +121,8 @@
 
 - [x] <b>Ideation & Market Research</b>: 문제 정의 및 기존 솔루션 분석.
 - [x] <b>Prototyping (Phase 1)</b>: MobileNet 기반 이미지 분류 모델 테스트 (-> <i>Background Noise 문제로 폐기</i>) (2025.12.19 ~ 2025.12.24)
-- [ ] <b>Stage 1: Logic Simulation (MacBook MVP)</b>: 로컬 환경(Mac)에서 MediaPipe 알고리즘 검증 및 가상 데이터 생성기 구현.
-- [ ] <b>Stage 2: Cloud Infrastructure (AWS)</b>: Serverless (Lambda + DynamoDB) 기반의 데이터 수신 파이프라인 및 배치 처리(Batch Upload) 구축.
+- [x] <b>Stage 1: Logic Simulation (MacBook MVP)</b>: 로컬 환경(Mac)에서 MediaPipe 알고리즘 검증 및 가상 데이터 생성기 구현.
+- [x] <b>Stage 2: Cloud Infrastructure (AWS)</b>: Serverless (Lambda + DynamoDB) 기반의 데이터 수신 파이프라인 및 배치 처리(Batch Upload) 구축.
 - [ ] <b>Stage 3: Web Dashboard (Client)</b>: Streamlit을 활용한 클라우드 데이터 시각화 및 학습 리포트 UI 구현.
 - [ ] <b>Stage 4: Hardware Porting (Edge)</b>: Raspberry Pi 포팅, 헤드리스(Headless) 최적화 및 엣지-클라우드 연동 테스트.
 - [ ] <b>B2B Deployment</b>: 관리형 독서실 환경 필드 테스트 및 피드백 반영.
